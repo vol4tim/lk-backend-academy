@@ -1,0 +1,43 @@
+{
+  "name": "academy",
+  "description": "",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && babel --out-dir dist src",
+    "build:dev": "npm run clean && ENV=dev babel --out-dir dist src",
+    "worker:prod": "nodemon src/worker.js --exec babel-node",
+    "worker:dev": "ENV=dev nodemon src/worker.js --exec babel-node",
+    "api:prod": "nodemon src/index.js --exec babel-node",
+    "api:dev": "ENV=dev nodemon src/index.js --exec babel-node",
+    "cron:prod": "nodemon src/cron.js --exec babel-node",
+    "cron:dev": "ENV=dev nodemon src/cron.js --exec babel-node",
+    "pretty": "prettier --write \"./src/**/*.{js,ts,json}\""
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.6.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "@polkadot/api": "^9.5.2",
+    "axios": "^1.1.3",
+    "axios-rate-limit": "^1.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-basic-auth": "^1.2.1",
+    "robonomics-interface": "^0.2.3",
+    "sequelize": "^6.25.2",
+    "sqlite3": "^5.1.2",
+    "winston": "^3.8.2"
+  }
+}
