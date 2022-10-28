@@ -14,7 +14,7 @@ export default {
     const result = authorizer(address, signature);
 
     res.send({
-      result: result.isValid,
+      ...result,
     });
   },
   async users(req, res) {
