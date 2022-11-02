@@ -120,6 +120,11 @@ export default {
       order: [["block", "ASC"]],
       limit: 2,
     });
+    const lesson2Count = await Lesson2.count({
+      attributes: ["id"],
+      where: { account },
+      order: [["block", "ASC"]],
+    });
     const lesson3 = await Lesson3.findAll({
       attributes: ["block", "index", "data"],
       where: { account },
@@ -127,6 +132,12 @@ export default {
     });
     const lesson4 = await Lesson4.findAll({
       attributes: ["block", "index", "time", "data", "corrects"],
+      where: { account },
+      order: [["block", "ASC"]],
+      limit: 2,
+    });
+    const lesson4Count = await Lesson4.count({
+      attributes: ["id"],
       where: { account },
       order: [["block", "ASC"]],
     });
@@ -138,9 +149,9 @@ export default {
     res.send({
       result: {
         lesson1,
-        lesson2,
+        lesson2: { list: lesson2, count: lesson2Count },
         lesson3,
-        lesson4,
+        lesson4: { list: lesson4, count: lesson4Count },
         lesson5,
       },
     });
