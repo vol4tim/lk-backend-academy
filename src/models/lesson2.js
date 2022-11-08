@@ -36,7 +36,7 @@ export async function createLesson2(item) {
       account: item.AccountId,
       time: item.Moment,
       data: JSON.stringify(item.Record),
-      corrects: checkCorrectAnswers(item.Record.data, correct_ans_lesson2),
+      corrects: checkCorrectAnswers(item.Record.data, correct_ans_lesson2, [0]),
     });
   }
 }
