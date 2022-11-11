@@ -40,9 +40,6 @@ export default {
           passed: false,
         };
       }
-      if (accounts2[lesson.account].count === 2) {
-        continue;
-      }
       if (lesson.corrects >= 10) {
         accounts2[lesson.account].passed = true;
       }
@@ -67,9 +64,6 @@ export default {
           passed: false,
         };
       }
-      if (accounts4[lesson.account].count === 2) {
-        continue;
-      }
       if (lesson.corrects >= 7) {
         accounts4[lesson.account].passed = true;
       }
@@ -89,13 +83,15 @@ export default {
       return {
         account: item.account,
         lesson1: Boolean(lesson1.includes(item.account)),
-        lesson2: Boolean(
-          accounts2[item.account] && accounts2[item.account].passed
-        ),
+        lesson2: accounts2[item.account] || {
+          count: 0,
+          passed: false,
+        },
         lesson3: Boolean(lesson3.includes(item.account)),
-        lesson4: Boolean(
-          accounts4[item.account] && accounts4[item.account].passed
-        ),
+        lesson4: accounts4[item.account] || {
+          count: 0,
+          passed: false,
+        },
         lesson5: Boolean(accounts5[item.account]),
       };
     });
@@ -113,45 +109,38 @@ export default {
       attributes: ["block", "index", "time", "data"],
       where: { account },
       order: [["block", "ASC"]],
+      raw: true,
     });
     const lesson2 = await Lesson2.findAll({
       attributes: ["block", "index", "time", "data", "corrects"],
       where: { account },
       order: [["block", "ASC"]],
-      limit: 2,
-    });
-    const lesson2Count = await Lesson2.count({
-      attributes: ["id"],
-      where: { account },
-      order: [["block", "ASC"]],
+      raw: true,
     });
     const lesson3 = await Lesson3.findAll({
       attributes: ["block", "index", "data"],
       where: { account },
       order: [["block", "ASC"]],
+      raw: true,
     });
     const lesson4 = await Lesson4.findAll({
       attributes: ["block", "index", "time", "data", "corrects"],
       where: { account },
       order: [["block", "ASC"]],
-      limit: 2,
-    });
-    const lesson4Count = await Lesson4.count({
-      attributes: ["id"],
-      where: { account },
-      order: [["block", "ASC"]],
+      raw: true,
     });
     const lesson5 = await Lesson5.findOne({
       attributes: ["ledger", "devices"],
       where: { account },
       order: [["block", "ASC"]],
+      raw: true,
     });
     res.send({
       result: {
         lesson1,
-        lesson2: { list: lesson2, count: lesson2Count },
+        lesson2: { list: lesson2, count: lesson2.length },
         lesson3,
-        lesson4: { list: lesson4, count: lesson4Count },
+        lesson4: { list: lesson4, count: lesson4.length },
         lesson5,
       },
     });
